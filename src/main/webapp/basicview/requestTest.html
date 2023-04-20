@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+<body>
+	<h2>서블릿 요청하는 방법</h2>
+	<h2>1. GET 방식으로 요청하기 </h2>
+	<h3> 1) 하이퍼링크로 요청하기 </h3>
+	<a href="/serverweb/first.sds">서블릿 요청</a>
+	<a href="/serverweb/gugu/gugudan.html">구구단 요청하기</a>
+	<a href="/serverweb/gugu/gugudan.html">
+		<img src="/serverweb/images/bts.jpg" width="200">
+	</a>
+	
+	<h3> 2) submit 버튼으로 요청 - form 태그의 method를 get으로 정의</h3>
+	<form action="/serverweb/life.do" method="get">
+		아이디 : <input type="text" name="id"/> <br/>
+		패스워드 : <input type="password" name="pass"/> <br/>
+		<input type="submit" value="login"/>
+	</form>
+	
+	<h3> method속성을 생략하면 get 방식으로 요청 </h3>
+	<form action="/serverweb/life.do">
+		아이디 : <input type="text" name="id"/> <br/>
+		패스워드 : <input type="password" name="pass"/> <br/>
+		<input type="submit" value="login"/>
+	</form>
+	
+	<h2>2. post 방식으로 요청하기 </h2>
+	<form action="/serverweb/life.do" method="post">
+		아이디 : <input type="text" name="id"/> <br/>
+		패스워드 : <input type="password" name="pass"/> <br/>
+		<input type="submit" value="login"/>
+	</form>
+</body>
+</html>
