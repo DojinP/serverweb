@@ -1,15 +1,20 @@
-package kr.multicampus.erp.user;
+package kr.multicampus.erp.user.mvc;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "empInsert", urlPatterns = {"/emp/insert.do"})
+import kr.multicampus.erp.user.EmpDAO;
+import kr.multicampus.erp.user.EmpDAOImpl;
+import kr.multicampus.erp.user.EmpDTO;
+
+@WebServlet(name = "empInsert_mvc", urlPatterns = {"/mvc/insert.do"})
 public class EmpInsertServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,20 +30,27 @@ public class EmpInsertServlet extends HttpServlet{
 		String addr = req.getParameter("addr");
 		int point = Integer.parseInt(req.getParameter("point"));
 		String grade = req.getParameter("grade");
-		
+
+		// 2. 비지니스 로직 메소드 호출
 		EmpDTO emp = new EmpDTO(deptno, name, id, pass, addr, grade);
 		EmpDAO empDAO = new EmpDAOImpl();
+		int result = empDAO.insert(emp);
 
-		// 2. 비지니스 로직 메소드 호출 & 클라이언트 응답
+		// 3. 데이터 공유
+		req.setAttribute("insertuser", name);
+
+		// 4. 요청 재지정
 		// 서블릿에서 바로 응답화면을 만들지 않고 응답할 뷰를 지정해서 실행되도록 처리
 		String view = "";	// 응답할 뷰에 대한 정보
-		if(empDAO.insert(emp) == 0) {	// 삽입 실패
-			out.write("<h1>사원등록실패</h1>");
-		}else {							// 삽입성공
-			out.write("<h1>사원등록성공</h1>");
+		if(result > 0) {	
+			// 이미 요청 scope 내부에서 처리중이므로 context path는 생략
+			view = "/user_mvc/insertOK.jsp";
+		}else {				
+			view = "/user_mvc/insertFail.jsp";
 		}
 		// 응답뷰가 클라이언트에게 response 되도록 재요청
-		resp.sendRedirect(view);
+		RequestDispatcher rd = req.getRequestDispatcher(view);
+		rd.forward(req, resp);
 		
 	}
 }

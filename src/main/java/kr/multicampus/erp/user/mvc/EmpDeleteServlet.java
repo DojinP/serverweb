@@ -1,4 +1,4 @@
-package kr.multicampus.erp.user;
+package kr.multicampus.erp.user.mvc;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,15 +7,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "empdelete", urlPatterns = { "/emp/delete.do" })
+import kr.multicampus.erp.user.EmpDAO;
+import kr.multicampus.erp.user.EmpDAOImpl;
+
+@WebServlet(name = "empdelete_mvc", urlPatterns = { "/mvc/delete.do" })
 public class EmpDeleteServlet extends HttpServlet {
 	// 송신하기 위해 만들어진 것
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 요청정보 추출
-//		String test = request.getParameter("test");
 		String id = request.getParameter("id");
-//		System.out.println(test+":"+id);
 		
 		EmpDAO empDAO = new EmpDAOImpl();
 		
@@ -25,13 +26,9 @@ public class EmpDeleteServlet extends HttpServlet {
 		// 응답생성
 		String redi = "";
 		if(result > 0) {
-//			redi = "/serverweb/user/deleteOK.html";
-//			redi = "/serverweb/emp/list.do?isDel=true&dId="+id;
-			redi = "/serverweb/emp/list.do";
+			redi = "/serverweb/mvc/list.do";
 		}else {
-//			redi = "/serverweb/user/deleteFail.html";
-//			redi = "/serverweb/emp/list.do?isDel=false&dId="+id;
-			redi = "/serverweb/emp/list.do";
+			redi = "/serverweb/mvc/list.do";
 		}
 		
 		response.sendRedirect(redi);

@@ -58,7 +58,7 @@ public class EmpDAOImpl implements EmpDAO {
 				ret.add(new EmpDTO(rs.getString(1), rs.getString(2), rs.getString(3), 
 						rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7)));
 			}
-			System.out.println("record count : " + ret.size());
+//			System.out.println("record count : " + ret.size());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -93,6 +93,81 @@ public class EmpDAOImpl implements EmpDAO {
 		return result;
 	}
 	
-	
+	@Override
+	public EmpDTO read(String id) {
+		String sql = "select * from myemp where id = ?";
+		Connection conn = null;
+		PreparedStatement ptmt = null;
+		ResultSet rs = null;
+		EmpDTO result = null;
+		
+		try {
+			conn = DBUtil.getConnect();
+			ptmt = conn.prepareStatement(sql);
+			
+			ptmt.setString(1, id);
+			
+			rs = ptmt.executeQuery();
+			
+			while(rs.next()) {
+				result = new EmpDTO(rs.getString(1),
+						rs.getString(2),
+						rs.getString(3),
+						rs.getString(4),
+						rs.getString(5),
+						rs.getInt(6),
+						rs.getString(7));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs, ptmt, conn);
+		}
+		
+		return result;
+	}
 
+	@Override
+	public EmpDTO login(String id, String pass) {
+//		System.out.println("====================로그인 진입=====================");
+		String sql = "select * from myemp where id = ? and pass = ?";
+		Connection con = null;
+		PreparedStatement ptmt = null;
+		ResultSet rs = null;
+		EmpDTO emp = null;
+		
+		try {
+			con = DBUtil.getConnect();
+			ptmt = con.prepareStatement(sql);
+			
+			ptmt.setString(1, id);
+			ptmt.setString(2, pass);
+			
+			System.out.println(ptmt.toString());
+			
+			rs = ptmt.executeQuery();
+			
+			while(rs.next()) {
+				emp = new EmpDTO(rs.getString(1),
+						rs.getString(2),
+						rs.getString(3),
+						rs.getString(4),
+						rs.getString(5),
+						rs.getInt(6),
+						rs.getString(7));
+			}
+			
+//			System.out.println(emp.toString());
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs, ptmt, con);
+		}
+		
+		return emp;
+	}
+	
 }
+

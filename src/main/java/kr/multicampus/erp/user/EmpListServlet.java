@@ -20,9 +20,14 @@ public class EmpListServlet extends HttpServlet{
 		// 인코딩 등 설정
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html; charset=UTF-8");
-		
-	
 		PrintWriter out = resp.getWriter();
+		
+//		boolean isDel = Boolean.parseBoolean(req.getParameter("isDel"));
+//		String dId = req.getParameter("dId");
+//		
+//		if(isDel) {
+//			out.print("<script type=")
+//		}
 		
 		// DAO 객체 생성
 		EmpDAO empDAO = new EmpDAOImpl();
